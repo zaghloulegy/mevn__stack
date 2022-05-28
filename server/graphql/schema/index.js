@@ -1,5 +1,5 @@
 const { ClubType } = require("../types");
-const { GraphQLObjectType, GraphQLList } = require("graphql");
+const { GraphQLObjectType, GraphQLList, GraphQLID } = require("graphql");
 const  Club  = require("../../models/Club");
 
 
@@ -15,11 +15,30 @@ const clubs = {
 };
 
 
+const singleClub = {
+  name: "singleClub",
+  type: ClubType,
+  args: { id: { type: GraphQLID }},
+  resolve: async (parent, args) => {
+    const club = await Club.findById(args.id);
+    return club;
+  },
+};
+
+
+
+
+
+
+
+
+
 
 const RootQuery = new GraphQLObjectType({
   name: "RootQuery",
   fields: {
-    clubs
+    clubs,
+    singleClub
   },
 });
 
