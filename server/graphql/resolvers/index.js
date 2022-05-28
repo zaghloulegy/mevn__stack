@@ -27,6 +27,20 @@ const addClub = {
     };
 
 
+    const updateClub = {
+      name: "updateClub",
+      type: ClubType,
+      args: { id: { type: GraphQLString }, name: { type: GraphQLString }, league: { type: GraphQLString } },
+      resolve: async (parent, args) => {
+        const updateClub = await Club.findByIdAndUpdate(args.id, { name: args.name, league: args.league });
+
+        return updateClub;
+      },
+    };
+
+
+
+
 
 
 
@@ -36,6 +50,7 @@ const RootMutation = new GraphQLObjectType({
   fields: {
     addClub,
     deleteClub,
+    updateClub
   },
 });
 

@@ -27,13 +27,6 @@ const singleClub = {
 
 
 
-
-
-
-
-
-
-
 const RootQuery = new GraphQLObjectType({
   name: "RootQuery",
   fields: {
