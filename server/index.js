@@ -4,11 +4,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const { graphqlHTTP } = require("express-graphql");
 const graphql = require("graphql");
-const GraphQLSchema = graphql.GraphQLSchema
-
+const GraphQLSchema = graphql.GraphQLSchema;
+const cors = require("cors");
 const RootQuery = require("./graphql/schema/index");
 const RootMutation = require("./graphql/resolvers/index");
-
 
 const app = express();
 
@@ -20,10 +19,12 @@ mongoose.connect(
   }
 );
 
+app.use(cors());
+
 app.use(
   "/graphql",
   graphqlHTTP({
-    schema: new GraphQLSchema({ query: RootQuery , mutation: RootMutation}),
+    schema: new GraphQLSchema({ query: RootQuery, mutation: RootMutation }),
     graphiql: true,
   })
 );

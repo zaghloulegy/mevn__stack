@@ -25,7 +25,9 @@
       </div>
     </div>
     <div class="all-clubs mt-4 container mx-auto">
-      <ul class="list space-y-2 flex inline-flex flex-wrap justify-between w-full">
+      <ul
+        class="list space-y-2 flex inline-flex flex-wrap justify-between w-full"
+      >
         <li
           class="text-gray-300 w-1/3 bg-gray-800 list-item shadow hover:bg-gray-700 transition-all transition-colors"
         >
@@ -44,8 +46,25 @@
 </template>
 
 <script>
+import { reactive, onMounted } from "vue";
+import { getClubs } from "../graphql/queries";
 export default {
-  setup() {},
+  setup(props) {
+    const state = reactive({
+      club: {
+        name: null,
+        league: null,
+      },
+      clubList: [],
+      update: false,
+      isLoading: false,
+    });
+
+    onMounted(async() => {
+      const allClubs = await getClubs();
+      state.clubList = allClubs;
+    });
+  },
 };
 </script>
 
