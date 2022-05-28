@@ -1,4 +1,4 @@
-const { GraphQLObjectType, GraphQLString } = require("graphql");
+const { GraphQLObjectType, GraphQLString, GraphQLID } = require("graphql");
 const { ClubType } = require("../types");
 const  Club  = require("../../models/Club");
 
@@ -15,7 +15,16 @@ const addClub = {
     }
 
 
-
+    const deleteClub = {
+      name: "deleteClub",
+      type: ClubType,
+      args: { id: { type: GraphQLString }},
+      resolve: async (parent, args) => {
+        const deleteClub = await Club.findByIdAndRemove(args.id);
+      
+        return deleteClub;
+      },
+    };
 
 
 
@@ -25,7 +34,8 @@ const addClub = {
 const RootMutation = new GraphQLObjectType({
   name: "RootMutation",
   fields: {
-    addClub
+    addClub,
+    deleteClub,
   },
 });
 
