@@ -41,10 +41,6 @@ const addClub = {
 
 
 
-
-
-
-
 const RootMutation = new GraphQLObjectType({
   name: "RootMutation",
   fields: {
