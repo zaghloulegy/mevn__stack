@@ -29,13 +29,15 @@
         class="list space-y-2 flex inline-flex flex-wrap justify-between w-full"
       >
         <li
-          class="text-gray-300 w-1/3 bg-gray-800 list-item shadow hover:bg-gray-700 transition-all transition-colors"
+          class=" text-gray-300 w-1/3 bg-gray-800 list-item shadow hover:bg-gray-700 transition-all transition-colors p-2"
+          v-for="(item, i) in state.clubList"
+          v-bind:key="i"
         >
           <div
             class="inside-list flex justify-between flex-row border-b border-solid border-indigo-900 mb-2"
           >
-            <p class="w-1/2">Club Name</p>
-            <p class="w-1/2">League</p>
+            <p class="w-1/2">{{item.name}}</p>
+            <p class="w-1/2">{{item.league}}</p>
           </div>
           <button class="bg-red-600 py-1 px-2 rounded">Delete</button>
           <button class="bg-blue-600 py-1 px-2 rounded">Update</button>
@@ -61,10 +63,18 @@ export default {
     });
 
     onMounted(async() => {
-      const allClubs = await getClubs();
+      const allClubs = await getClubs(state);
       state.clubList = allClubs;
+    
+    
+    
+    
     });
-  },
+  
+    return {
+      state,
+    };
+    },
 };
 </script>
 
