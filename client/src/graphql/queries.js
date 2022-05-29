@@ -1,5 +1,4 @@
-const url = "http://localhost:3000/graphql";
-
+const {HOSTNAME} = require("../config/keys.js");
 const getClubs = async (state) => {
 
   state.isLoading = true;
@@ -21,7 +20,7 @@ const getClubs = async (state) => {
     
   };
 
-  const response = await fetch(url, options);
+  const response = await fetch(HOSTNAME, options);
   //   console.log(response);
   const text = await response.text();
   const jsonRes = JSON.parse(text);
