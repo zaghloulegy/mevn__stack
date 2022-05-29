@@ -44,7 +44,7 @@
             <p class="w-1/2">{{ item.name }}</p>
             <p class="w-1/2">{{ item.league }}</p>
           </div>
-          <button class="bg-red-600 py-1 px-2 rounded">Delete</button>
+          <button class="bg-red-600 py-1 px-2 rounded" v-on:click="(e)=>deleteHandler(e, item.id)">Delete</button>
           <button class="bg-blue-600 py-1 px-2 rounded">Update</button>
         </li>
       </ul>
@@ -55,7 +55,7 @@
 <script>
 import { reactive, onMounted } from "vue";
 import { getClubs } from "../graphql/queries";
-import { addClub } from "../graphql/mutations";
+import { addClub, deleteClub } from "../graphql/mutations";
 export default {
   setup(props) {
     const state = reactive({
@@ -86,9 +86,22 @@ export default {
       state.clubList = allClubs;
     };
 
+
+
+    const deleteHandler = async (e, itemId) => {
+      e.preventDefault();
+      // console.log(id);
+      const deletedClub = await deleteClub(state, itemId);
+
+      const allClubs = await getClubs(state);
+      // console.log(allClubs);
+      state.clubList = allClubs;
+    };
+
     return {
       state,
       submitItemHandler,
+      deleteHandler,
     };
   },
 };

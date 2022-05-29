@@ -29,4 +29,30 @@ const addClub = async (state, club) => {
     // return jsonRes.data.addClub;
 }
 
-export { addClub };
+const deleteClub = async (state, id) => {
+    state.isLoading = true;
+
+    const options = {
+        method: "POST",
+        headers: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify({ 
+            query: `mutation{
+                deleteClub(
+                    id: "${id}"
+                ){
+                    name
+                }
+            }` 
+        })
+    };
+
+    const response = await fetch(HOSTNAME, options);
+    console.log("deleteClub", response);
+    state.isLoading = false;
+    
+    // return jsonRes.data.deleteClub;
+}
+
+export { addClub, deleteClub };
