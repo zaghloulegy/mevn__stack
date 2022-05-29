@@ -45,7 +45,7 @@
             <p class="w-1/2">{{ item.league }}</p>
           </div>
           <button class="bg-red-600 py-1 px-2 rounded" v-on:click="(e)=>deleteHandler(e, item.id)">Delete</button>
-          <button class="bg-blue-600 py-1 px-2 rounded">Update</button>
+          <button class="bg-blue-600 py-1 px-2 rounded" v-on:click="(e)=>updateHandler(e, item.id)">Update</button>
         </li>
       </ul>
     </div>
@@ -55,11 +55,12 @@
 <script>
 import { reactive, onMounted } from "vue";
 import { getClubs } from "../graphql/queries";
-import { addClub, deleteClub } from "../graphql/mutations";
+import { addClub, deleteClub, updateClub } from "../graphql/mutations";
 export default {
   setup(props) {
     const state = reactive({
       club: {
+        id: null,
         name: null,
         league: null,
       },
@@ -78,12 +79,24 @@ export default {
       e.preventDefault();
       // console.log(state.club.league);
       //add new CLub
+
+    if( state.update === true){
+      //UPDATE EXISTING CLUB
+      const updatedClub = await updateClub(state, state.club.id);
+    }else{
       const newClub = await addClub(state);
+    }
 
       //fetch once again to update club list
       const allClubs = await getClubs(state);
       // console.log(allClubs);
       state.clubList = allClubs;
+        state.club = {
+        id: null,
+        name: null,
+        league: null,
+      };
+        state.update = false;
     };
 
 
@@ -96,15 +109,32 @@ export default {
       const allClubs = await getClubs(state);
       // console.log(allClubs);
       state.clubList = allClubs;
+    
+    
     };
+
+  const updateHandler = async (e, itemId) => {
+    e.preventDefault();
+    const selectedClub = state.clubList.filter((club, i) => club.id === itemId)[0];
+    state.club.name = selectedClub.name;
+    state.club.league = selectedClub.league;
+    state.club.id = selectedClub.id;
+    // console.log(state);
+    state.update = true;
+  };
 
     return {
       state,
       submitItemHandler,
       deleteHandler,
+      updateHandler,
     };
   },
-};
+  }
+
+
+
+  
 </script>
 
 <style scoped>
